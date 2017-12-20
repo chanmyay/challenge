@@ -1,7 +1,7 @@
 Challenge Project : Web
 
-Requirement
------------
+Requirements
+------------
 
 - Python 3
 - Django 2.0
