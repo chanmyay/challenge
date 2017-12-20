@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Challenge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Challenge" />
+</head> 
+
+<link href="{% static '/bootstrap-3.3.7/css/bootstrap.min.css' %}" rel='stylesheet' type='text/css' />
+<link href="{% static '/bootstrap-3.3.7/css/bootstrap.css' %}" rel='stylesheet' type='text/css' />
+
+<script src="{% static '/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static '/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static '/bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+ 
+{% block content %}
+{% endblock %}
+
+<footer>
+</footer>
+</html>

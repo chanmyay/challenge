@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<h2>Delete Order</h2>
+
+
+<p class="text-danger">Are you sure you want to delete an order '{{ order }}'?</p>
+<form action="{% url 'order_delete' pk=order.id %}" method="POST">
+  {% csrf_token %}
+
+  <input class="btn btn-danger" type="submit" value="Yes, delete.">
+  <a class="btn btn-primary" href="{% url 'order_list' %}" role="button">No, cancel.</a>
+</form>
+
+{% endblock %}
