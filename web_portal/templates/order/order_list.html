@@ -1,51 +1,116 @@
 {% extends "base/base.html" %}
 
 {% block content %}
+
+
+<div class="row-fluid">
+  <div class="span12">
     <h1>Order List</h1>
+  </div>
+</div>
 
-    {% if order_list %}
+<div class="row-fluid"> 
+  <div class="span12"></div>
+</div> 
 
-    <table class="table table-striped">
-      {% for order in order_list %}
-        <tr>
+{% if order_list %}
+  <table class="table table-hover">
+    {% for order in order_list %}
+      <tr>
         <td>
-        <a class="list-group-horizontal list-group-item" href="{{ order.get_absolute_url }}">{{ order }} {{ order.customer }} {{ order.product }}</a>
+          <div class="row-fluid"> 
+            <div class="span6">
+              <a 
+                class="btn input-block-level" 
+                href="{{ order.get_absolute_url }}">
+                {{ order }} {{ order.customer }} {{ order.product }}
+              </a>
+            </div>
+            <div class="span2">
+              <a 
+                class="btn input-block-level" 
+                href="{% url 'order_delete' pk=order.id %}" 
+                role="button">Delete Order
+              </a>
+            </div>
+          </div>
         </td>
-        <td>
-        <a class="list-group-horizontal list-group-item" href="{% url 'order_delete' pk=order.id %}" role="button">Delete Order</a>
-        </td>
-        </tr>
-      {% endfor %}
-
-    </table>
+      </tr>
+    {% endfor %}
+  </table>
 
   {% if is_paginated %}
-  <ul class="pagination">
-    {% if page_obj.has_previous %}
-      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in paginator.page_range %}
-      {% if page_obj.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-    {% endif %}
-  </ul>
+    <div class="row-fluid"> 
+      <div class="span12">
+        <div class="pagination pagination-centered">
+
+          <ul>
+          {% if page_obj.has_previous %}
+            <li>
+              <a 
+                href="?page={{ page_obj.previous_page_number }}">
+                &laquo;
+              </a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <span>&laquo;</span>
+            </li>
+          {% endif %}
+
+          {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+              <li class="active">
+                <span>{{ i }} </span>
+              </li>
+            {% else %}
+              <li>
+                <a href="?page={{ i }}">{{ i }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li>
+              <a 
+                href="?page={{ page_obj.next_page_number }}">
+                &raquo;
+              </a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <span>&raquo;</span>
+            </li>
+          {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+
+{% else %}
+  <div class="row-fluid"> 
+    <div class="span12"><p>There has no order to show.</p></div>
+  </div> 
+
 {% endif %}
 
+<div class="row-fluid"> 
+  <div class="span12">
+  </div>
+</div>
 
-    {% else %}
-      <p>There has no order to show.</p>
-    {% endif %}
+<div class="row-fluid"> 
+  <div class="span12"> 
+    <a class="btn btn-large btn-primary" 
+    href="{% url 'order_create' %}" >Create Order</a>
+  </div>
+</div> 
 
-    <a class="btn btn-primary" href="{% url 'order_create' %}" role="button">Create Order</a>
+
+
+  
+   
 
 {% endblock %}

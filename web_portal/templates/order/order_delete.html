@@ -2,15 +2,45 @@
 
 {% block content %}
 
-<h2>Delete Order</h2>
 
 
-<p class="text-danger">Are you sure you want to delete an order '{{ order }}'?</p>
+<div class="row-fluid">
+  <div class="span12">
+    <h2>Delete Order</h2>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12"></div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <p class="text-danger">Are you sure you want to delete an order '{{ order }}'?</p>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12"></div>
+</div>
+
 <form action="{% url 'order_delete' pk=order.id %}" method="POST">
   {% csrf_token %}
+  <div class="row-fluid">
+    <div class="span4">
 
-  <input class="btn btn-danger" type="submit" value="Yes, delete.">
-  <a class="btn btn-primary" href="{% url 'order_list' %}" role="button">No, cancel.</a>
+      <input 
+        class="btn btn-danger" 
+        type="submit" 
+        value="Yes, delete.">
+    </div>
+    <div class="span4">
+        <a 
+          class="btn btn-primary" 
+          href="{% url 'order_list' %}" 
+          role="button">No, cancel.</a>
+    </div>
+  </div>
 </form>
 
 {% endblock %}

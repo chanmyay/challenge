@@ -1,131 +1,207 @@
 {% extends "base/base.html" %}
 {% block content %}
-  <form  id="order_create" action="" method="post">{% csrf_token %}
+<div class="row-fluid">
+  <div class="span12">
+    <h2>Creaet New Order</h2>
+  </div>
+</div>
 
-
-    <div class="form-group">
+<form  id="order_create" action="" method="post">
+  {% csrf_token %}
+  <div class="row-fluid">
+    <div class="span3">
       <label for="organizationSelect">Organization</label>
-      <select class="form-control" id="organization" name="organization"  onclick="onchangeOrganization(this)"
- onchange="onchangeOrganization(this,document.getElementById('branch'))">
-      <option value=""> -----</option>
-      {% for organization in organizations %}
-        <option value="{{ organization.id }}"> {{ organization.name }}</option>
-      {% endfor %}
-      </select>
     </div>
-
-
-    <div class="form-group">
-      <label for="branchSelect">Branch</label>
-      <select class="form-control" id="branch" name="branch" onclick="onchangeBranch(this,document.getElementById('customer_select'))"
-onchange="onchangeBranch(this,document.getElementById('customer'))">
+  </div>
+  <div class="row-fluid">
+    <div class="span5">
+      <select 
+        class="form-control" 
+        id="organization" 
+        name="organization"  
+        onclick="onchangeOrganization(this)"
+        onchange="onchangeOrganization(
+          this,document.getElementById('branch'))">
         <option value=""> -----</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="customerSelect">Customer</label>
-      <select class="form-control" id="customer" name="customer">
-        <option value=""> -----</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="productSelect">Product</label>
-      <select class="form-control" id="product" name="product">
-        <option value=""> -----</option>
-        {% for product in products %}
-          <option value="{{ product.id }}"> {{ product.name }}</option>
+        {% for organization in organizations %}
+          <option value="{{ organization.id }}"> 
+            {{ organization.name }}
+          </option>
         {% endfor %}
       </select>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="comment">Comment:</label>
-      <textarea class="form-control" rows="5" id="comments" name="comments"></textarea>
+
+  <div class="row-fluid">
+    <div class="span3">
+      <label for="branchSelect">Branch</label>
     </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span5">
+      <select class="form-control" 
+        id="branch" name="branch" 
+        onclick="onchangeBranch(
+        this,document.getElementById('customer_select'))"
+        onchange="onchangeBranch(
+        this,document.getElementById('customer'))">
+        <option value=""> -----</option>
+      </select>
+    </div>
+  </div>
 
-      <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Data Error" data-content="..." id="buttonPopover"onclick="checkData()">Save</button>
+  <div class="row-fluid">
+    <div class="span3">
+      <label for="customerSelect">Customer</label>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span5">
+      <select 
+        class="form-control" 
+        id="customer" n
+        ame="customer">
+        <option value=""> -----</option>
+      </select>
+    </div>
+  </div>
 
+  <div class="row-fluid">
+    <div class="span3">
+      <label for="productSelect">Product</label>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span5"> 
+      <select
+        class="form-control" 
+        id="product" 
+        name="product">
+
+        <option value=""> -----</option>
+        {% for product in products %}
+        <option value="{{ product.id }}"> 
+          {{ product.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>  
+  </div>
+
+  <div class="row-fluid">
+    <div class="span3">
+      <label for="comment">Comment:</label>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span5">
+      <textarea 
+        class="form-control" 
+        rows="5" 
+        id="comments" 
+        name="comments">
+        
+      </textarea>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span5">
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span4">
+      <button 
+        type="button" 
+        class="btn btn-lg btn-danger" 
+        data-toggle="popover" 
+        title="Data Error" 
+        data-content="..." 
+        id="buttonPopover" 
+        onclick="checkData()">Save
+      </button>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span5">
       <span id="helpBlock" class="help-block"></span>
+    </div>
+  </div>
+</form>
+
 
 
 
 <script type="text/javascript">
 
-    function onchangeBranch(f_branch){
-        var branch_val = f_branch.value;
-        var branch_array = {{ branch_array|safe }};
-        var f_customer = document.getElementById('customer');
-        for(var key in branch_array) {
-            if (key == branch_val) {
-
-                f_customer.options.length = 1;
-                {% for d_customer in customers %}
-                    index = branch_array[key].indexOf( {{ d_customer.id }} )
-                    if ( index != -1  ) {
-                        createOption(f_customer, "{{ d_customer }}" , {{ d_customer.id }} );
-                    }
-                    
-                {% endfor %}
-
-                break;
-            }
-        }
-
-    }
-
-    function onchangeOrganization(f_org) {
-        var org_array = {{ organization_array|safe }};
-        var org_val = f_org.value;
-        var f_branch = document.getElementById('branch');
-        var f_customer = document.getElementById('customer');
+  function onchangeBranch(f_branch){
+    var branch_val = f_branch.value;
+    var branch_array = {{ branch_array|safe }};
+    var f_customer = document.getElementById('customer');
+    for(var key in branch_array) {
+      if (key == branch_val) {
         f_customer.options.length = 1;
-        for(var key in org_array) {
-            if (key == org_val) {
-
-                f_branch.options.length = 1;
-                {% for d_branch in branches %}
-                    index = org_array[key].indexOf( {{ d_branch.id }} )
-                    if ( index != -1  ) {
-                        createOption(f_branch, "{{ d_branch.name }}" , {{ d_branch.id }} );
-                    }
-                    
-                {% endfor %}
-
-                break;
-            }
-        }
-    }
-
-    function createOption(ddl, text, value) {
-        var opt = document.createElement('option');
-        opt.value = value;
-        opt.text = text;
-        ddl.appendChild(opt);
-    }
-
-    function checkData() {
-      var message = "";
-
-
-      if (document.getElementById('customer').selectedIndex == ""){
-        message = "Please select Customer";
-      } else if (document.getElementById('branch').selectedIndex == ""){
-        message = "Please select Branch";
-      } else if (document.getElementById('product').selectedIndex == ""){
-        message = "Please select Product";
-      } else if (document.getElementById('organization').selectedIndex == ""){
-        message = "Please select Organization";
-      } else {
-        document.getElementById("order_create").submit();
+        {% for d_customer in customers %}
+          index = branch_array[key].indexOf( {{ d_customer.id }} )
+          if ( index != -1  ) {
+            createOption(f_customer, "{{ d_customer }}" , 
+              {{ d_customer.id }} );
+          }  
+        {% endfor %}
+        break;
       }
-      var help = $('.help-block');
-      help.attr('data-content', help.html()).text(message);
     }
+  }
 
+  function onchangeOrganization(f_org) {
+    var org_array = {{ organization_array|safe }};
+    var org_val = f_org.value;
+    var f_branch = document.getElementById('branch');
+    var f_customer = document.getElementById('customer');
+    f_customer.options.length = 1;
+    for(var key in org_array) {
+      if (key == org_val) {
+        f_branch.options.length = 1;
+        {% for d_branch in branches %}
+          index = org_array[key].indexOf( {{ d_branch.id }} )
+          if ( index != -1  ) {
+            createOption(f_branch, "{{ d_branch.name }}" , 
+              {{ d_branch.id }} );
+          } 
+        {% endfor %}
+        break;
+      }
+    }
+  }
 
+  function createOption(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.appendChild(opt);
+  }
+
+  function checkData() {
+    var message = "";
+    if (
+      document.getElementById('customer').selectedIndex == ""){
+      message = "Please select Customer";
+    } else if (
+      document.getElementById('branch').selectedIndex == ""){
+      message = "Please select Branch";
+    } else if (
+      document.getElementById('product').selectedIndex == ""){
+      message = "Please select Product";
+    } else if (
+      document.getElementById('organization').selectedIndex == ""){
+      message = "Please select Organization";
+    } else {
+      document.getElementById("order_create").submit();
+    }
+    var help = $('.help-block');
+    help.attr('data-content', help.html()).text(message);
+  }
 
 </script>
-    </form>
+
 {% endblock %}

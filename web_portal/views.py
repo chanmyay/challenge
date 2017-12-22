@@ -70,7 +70,7 @@ class OrderDelete(DeleteView):
 class OrderList(ListView):
 
     model = Order
-    paginate_by = '10'
+    paginate_by = '2'
     context_object_name = 'order_list'
     queryset = Order.objects.all()
     template_name = 'order/order_list.html'
