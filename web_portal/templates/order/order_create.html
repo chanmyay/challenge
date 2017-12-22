@@ -76,8 +76,8 @@ onchange="onchangeBranch(this,document.getElementById('customer'))">
     }
 
     function onchangeOrganization(f_org) {
-        var org_val = f_org.value;
         var org_array = {{ organization_array|safe }};
+        var org_val = f_org.value;
         var f_branch = document.getElementById('branch');
         var f_customer = document.getElementById('customer');
         f_customer.options.length = 1;

@@ -102,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# REST Framework 
+# REST Framework
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

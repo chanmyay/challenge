@@ -4,7 +4,7 @@
 
 <div class="form-group">
       <label for="organizationSelect">Order ID</label>
-      <input class="form-control" id="unique_identifier_for_order" name="unique_identifier_for_order" type="text" placeholder="{{order_name}}" disabled>
+      <input class="form-control" id="unique_identifier_for_order" name="unique_identifier_for_order" type="text" placeholder="{{ order.unique_identifier_for_order}}" disabled>
     </div>
 
 
@@ -54,7 +54,7 @@
 
     <div class="form-group">
       <label for="comment">Comment:</label>
-      <textarea class="form-control" rows="5" id="comments" name="comments">{{ comments }}</textarea>
+      <textarea class="form-control" rows="5" id="comments" name="comments">{{ order.comments }}</textarea>
     </div>
 
 

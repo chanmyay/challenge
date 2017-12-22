@@ -5,11 +5,16 @@ from rest_framework.response import Response
 
 from .models import Order
 from .serializers import OrderListSerializers, OrderSerializers
-from .utils import generate_context_data_values, generate_unique_value
+from .utils import generate_context_data_values
+
+# Order list API
+
 
 class OrderListAPI(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderListSerializers
+
+# Order create API
 
 
 class OrderCreateAPI(generics.GenericAPIView):
@@ -22,9 +27,10 @@ class OrderCreateAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
 
-        request.data['unique_identifier_for_order'] = generate_unique_value()
         order_serializer = OrderSerializers(data=request.data)
         if order_serializer.is_valid():
-            order = order_serializer.create(order_serializer)
-            return Response( json.dumps(order), status=status.HTTP_201_CREATED)
-        return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            order = order_serializer.save()
+            return Response(order_serializer.data,
+                            status=status.HTTP_201_CREATED)
+        return Response(order_serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
