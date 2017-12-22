@@ -1,7 +1,9 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token
 
 from .views import OrderCreate, OrderUpdate, OrderDelete, OrderList
+from .views import sign_in, sign_out
 from .apis import OrderListAPI, OrderCreateAPI
 
 urlpatterns = [
@@ -22,5 +24,8 @@ urlpatterns = [
     path('api/order_list', OrderListAPI.as_view(), name='api_order_list'),
     path('api/order_create', OrderCreateAPI.as_view(),
          name="api_order_create"),
+
+    path('login', sign_in, name='login'),
+    path('logout', sign_out, name='logout'),
 
 ]

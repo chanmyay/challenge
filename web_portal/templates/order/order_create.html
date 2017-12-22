@@ -60,8 +60,8 @@
     <div class="span5">
       <select 
         class="form-control" 
-        id="customer" n
-        ame="customer">
+        id="customer"
+        name="customer">
         <option value=""> -----</option>
       </select>
     </div>
@@ -107,6 +107,7 @@
   </div>
   <div class="row-fluid">
     <div class="span5">
+       <span id="helpBlock" class="help-block"></span>
     </div>
   </div>
   <div class="row-fluid">
@@ -122,11 +123,17 @@
       </button>
     </div>
   </div>
+
   <div class="row-fluid">
     <div class="span5">
-      <span id="helpBlock" class="help-block"></span>
+      <a 
+        class="btn btn-primary" 
+        href="{% url 'order_list' %}" 
+        role="button">No, cancel.</a>
     </div>
   </div>
+
+  {{ form.errors }}
 </form>
 
 
@@ -184,17 +191,17 @@
   function checkData() {
     var message = "";
     if (
-      document.getElementById('customer').selectedIndex == ""){
-      message = "Please select Customer";
+      document.getElementById('organization').selectedIndex == ""){
+      message = "Please select Organization";
     } else if (
       document.getElementById('branch').selectedIndex == ""){
       message = "Please select Branch";
     } else if (
+      document.getElementById('customer').selectedIndex == ""){
+      message = "Please select Customer";
+    } else if (
       document.getElementById('product').selectedIndex == ""){
       message = "Please select Product";
-    } else if (
-      document.getElementById('organization').selectedIndex == ""){
-      message = "Please select Organization";
     } else {
       document.getElementById("order_create").submit();
     }

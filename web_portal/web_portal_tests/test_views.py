@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from ..models import Order, Product, Customer, Branch, Organization
 
@@ -17,21 +18,32 @@ class OrderListViewTest(TestCase):
             Order.objects.create(product=product, 
                     customer=customer, 
                     comments="comment %s"% order_number)
+
+        user = User.objects.create_user('username', 'username@email.com', 'userpassword')
+
+    def test_login(self):
+        self.client.login(username='username', password='userpassword')
+        response = self.client.get(reverse('order_list'))
+        self.assertEqual(response.status_code, 200)
            
     def test_list_view_url_exists_at_desired_location(self): 
+        self.client.login(username='username', password='userpassword')
         response = self.client.get('/order/') 
         self.assertEqual(response.status_code, 200)  
            
     def test_list_view_url_accessible_by_name(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.get(reverse('order_list'))
         self.assertEqual(response.status_code, 200)
         
     def test_list_view_uses_correct_template(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.get(reverse('order_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'order/order_list.html')
         
     def test_list_pagination_is_six(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.get(reverse('order_list'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
@@ -39,6 +51,7 @@ class OrderListViewTest(TestCase):
         self.assertTrue( len(response.context['order_list']) == 10)
 
     def test_lists_all_orders(self):
+        self.client.login(username='username', password='userpassword')
         # Get third page and confirm it has (exactly) remaining 1 items
         response = self.client.get(reverse('order_list')+'?page=3')
         self.assertEqual(response.status_code, 200)
@@ -47,22 +60,26 @@ class OrderListViewTest(TestCase):
         self.assertTrue( len(response.context['order_list']) == 1)
 
     def test_lists_page_not_exist(self):
+        self.client.login(username='username', password='userpassword')
         # Try to check fifth page that does not exist 
         response = self.client.get(reverse('order_list')+'?page=5')
         self.assertEqual(response.status_code, 404)
 
 
     def test_update_view_url_exists_at_desired_location(self): 
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get('/order/%s/edit' % (order.id)) 
         self.assertEqual(response.status_code, 200)  
            
     def test_update_view_url_accessible_by_name(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get(reverse('order_update', kwargs={'pk':order.id}))
         self.assertEqual(response.status_code, 200)
         
     def test_update_view_uses_correct_template(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get(reverse('order_update', kwargs={'pk':order.id}))
         self.assertEqual(response.status_code, 200)
@@ -70,6 +87,7 @@ class OrderListViewTest(TestCase):
 
 
     def test_update_view_not_exist(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.post(reverse('order_update', kwargs={'pk':10000000000}))
 
         # try to delete the record that does not exist
@@ -77,13 +95,10 @@ class OrderListViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_update_view_update_existing_data_success(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get(reverse('order_update', kwargs={'pk':order.id}))
         self.assertEqual(response.status_code, 200)
-
-        # form = OrderForm(order)
-        # order.comment = 'new test'
-        # order.save()
 
         response = self.client.post(reverse('order_update', kwargs={'pk':order.id}), 
             {'unique_identifier_for_order':order.unique_identifier_for_order,
@@ -96,6 +111,7 @@ class OrderListViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_update_view_update_existing_data_fail(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get(reverse('order_update', kwargs={'pk':order.id}))
         self.assertEqual(response.status_code, 200)
@@ -111,20 +127,24 @@ class OrderListViewTest(TestCase):
 
 
     def test_create_view_url_exists_at_desired_location(self): 
+        self.client.login(username='username', password='userpassword')
         response = self.client.get('/order/create/') 
         self.assertEqual(response.status_code, 200)  
            
     def test_create_view_url_accessible_by_name(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.get(reverse('order_create'))
         self.assertEqual(response.status_code, 200)
 
     def test_create_view_uses_correct_template(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.get(reverse('order_create'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'order/order_create.html')
 
 
     def test_create_view_success(self):
+        self.client.login(username='username', password='userpassword')
         customer = Customer.objects.all()[0]
         product = Product.objects.all()[0]
 
@@ -139,7 +159,7 @@ class OrderListViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_create_view_fail(self):
-
+        self.client.login(username='username', password='userpassword')
         product = Product.objects.all()[0]
 
         # post data without customer
@@ -154,16 +174,19 @@ class OrderListViewTest(TestCase):
 
 
     def test_delete_view_url_exists_at_desired_location(self): 
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get('/order/%s/delete'%(order.id)) 
         self.assertEqual(response.status_code, 200)  
            
     def test_delete_view_url_accessible_by_name(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get(reverse('order_delete',kwargs={'pk':order.id}))
         self.assertEqual(response.status_code, 200)
 
     def test_delete_view_uses_correct_template(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.get(reverse('order_delete', kwargs={'pk':order.id}))
         self.assertEqual(response.status_code, 200)
@@ -171,6 +194,7 @@ class OrderListViewTest(TestCase):
 
 
     def test_delete_view_successful(self):
+        self.client.login(username='username', password='userpassword')
         order = Order.objects.all()[0]
         response = self.client.post(reverse('order_delete', kwargs={'pk':order.id}))
 
@@ -179,6 +203,7 @@ class OrderListViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_delete_view_not_exist(self):
+        self.client.login(username='username', password='userpassword')
         response = self.client.post(reverse('order_delete', kwargs={'pk':10000000000}))
 
         # try to delete the record that does not exist

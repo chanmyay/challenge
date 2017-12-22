@@ -1,9 +1,4 @@
-import random
-import itertools
 import json
-
-from django.core.exceptions import ObjectDoesNotExist
-from django.forms.models import model_to_dict
 
 from .models import Organization, Branch, Customer, Product
 
@@ -12,7 +7,7 @@ from .models import Organization, Branch, Customer, Product
 
 
 def model_context_data(context, organizations, branches, customers):
-    
+
     # use django ORM
 
     organization_array = {}

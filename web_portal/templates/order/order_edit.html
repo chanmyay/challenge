@@ -216,17 +216,17 @@
   function checkData() {
     var message = "";
     if (
-      document.getElementById('customer').selectedIndex == ""){
-      message = "Please select Customer";
+      document.getElementById('organization').selectedIndex == ""){
+      message = "Please select Organization";
     } else if (
       document.getElementById('branch').selectedIndex == ""){
       message = "Please select Branch";
     } else if (
+      document.getElementById('customer').selectedIndex == ""){
+      message = "Please select Customer";
+    } else if (
       document.getElementById('product').selectedIndex == ""){
       message = "Please select Product";
-    } else if (
-      document.getElementById('organization').selectedIndex == ""){
-      message = "Please select Organization";
     } else {
       document.getElementById("order_edit").submit();
     }
