@@ -12,19 +12,21 @@ from .models import Organization, Branch, Customer, Product
 
 
 def model_context_data(context, organizations, branches, customers):
+    
+    # use django ORM
 
     organization_array = {}
     for organization in organizations:
         organization_array[organization.pk] = [
-            branch.pk for branch in branches
-            if branch.organization.pk == organization.pk]
+            org[0] for org in organization.branch_set.all().values_list('pk')
+        ]
     context['organization_array'] = organization_array
 
     branch_array = {}
     for branch in branches:
         branch_array[branch.pk] = [
-            customer.pk for customer in customers
-            if customer.branch.pk == branch.pk]
+            bran[0] for bran in branch.customer_set.all().values_list('pk')
+        ]
     context['branch_array'] = branch_array
     return context
 

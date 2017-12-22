@@ -168,9 +168,9 @@
     var branch_val = f_branch.value;
     var branch_array = {{ branch_array|safe }};
     var f_customer = document.getElementById('customer');
+    f_customer.options.length = 1;
     for(var key in branch_array) {
       if (key == branch_val) {
-        f_customer.options.length = 1;
         {% for d_customer in customers %}
           index = branch_array[key].indexOf( 
             {{ d_customer.id }} )
@@ -190,9 +190,9 @@
     var f_branch = document.getElementById('branch');
     var f_customer = document.getElementById('customer');
     f_customer.options.length = 1;
+    f_branch.options.length = 1;
     for(var key in org_array) {
       if (key == org_val) {
-        f_branch.options.length = 1;
         {% for d_branch in branches %}
           index = org_array[key].indexOf( {{ d_branch.id }} )
           if ( index != -1  ) {
